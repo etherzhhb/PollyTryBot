@@ -8,6 +8,7 @@ from buildbot.process.properties import WithProperties
 
 from zorg.buildbot.builders import LNTBuilder
 from zorg.buildbot.builders import ClangBuilder
+from zorg.buildbot.util.checkoutSVN import checkoutSVN
 
 def installRequiredLibs(f, polly_src):
 
@@ -47,6 +48,7 @@ def checkRequiredLibs(f, polly_src):
                                description=["check cloog and isl"],
                                workdir=cloog_srcdir))
 
+
 def getPollyBuildFactory():
     llvm_srcdir = "llvm.src"
     llvm_objdir = "llvm.obj"
@@ -62,16 +64,16 @@ def getPollyBuildFactory():
                                                description="set build dir",
                                                workdir="."))
     # Get LLVM, clang and Polly
-    f.addStep(SVN(name='svn-llvm',
+    checkoutSVN(f=f,
+                  name='svn-llvm',
                   mode='update',
-                  baseURL='http://llvm.org/svn/llvm-project/llvm/',
-                  defaultBranch='trunk',
-                  workdir=llvm_srcdir))
-    f.addStep(SVN(name='svn-clang',
+                  svnurl='http://llvm.org/svn/llvm-project/llvm/trunk',
+                  workdir=llvm_srcdir)
+    checkoutSVN(f=f,
+                  name='svn-clang',
                   mode='update',
-                  baseURL='http://llvm.org/svn/llvm-project/cfe/',
-                  defaultBranch='trunk',
-                  workdir=clang_srcdir))
+                  svnurl='http://llvm.org/svn/llvm-project/cfe/trunk',
+                  workdir=clang_srcdir)
     f.addStep(SVN(name='svn-polly',
                   mode='update',
                   baseURL='http://llvm.org/svn/llvm-project/polly/',
