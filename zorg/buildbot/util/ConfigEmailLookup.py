@@ -29,7 +29,7 @@ class ConfigEmailLookup(buildbot.util.ComparableMixin):
     self.config_parser.read(self.author_filename)
 
     self.time_checked = datetime.utcnow()
-    self.time_loaded  = datetime.utcfromtimestamp(os.path.getmtime(self.author_filename))
+    self.time_loaded  = datetime.utcfromtimestamp(0.0)
 
     if only_addresses:
       import re
