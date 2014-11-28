@@ -12,6 +12,7 @@ import zorg
 from zorg.buildbot.builders import ClangBuilder
 from zorg.buildbot.util.phasedbuilderutils import getBuildDir, setProperty
 from zorg.buildbot.util.artifacts import GetCompilerRoot, package_url
+from zorg.buildbot.util.checkoutSVN import checkoutSVN
 
 def _get_cc(status, stdin, stdout):
     lines = filter(bool, stdin.split('\n'))
@@ -95,15 +96,16 @@ def AddLNTTestsToFactory(f, nt_flags, cc_path, cxx_path, **kwargs):
                                       'libLTO.dylib'))])
 
     # Get the LNT sources.
-    f.addStep(SVN(name='pull.lnt', mode='incremental', method='fresh',
-                  baseURL='http://llvm.org/svn/llvm-project/lnt/',
-                  defaultBranch='trunk', workdir='lnt', alwaysUseLatest=True))
+    checkoutSVN(f = f,
+                  name='pull.lnt', mode='incremental',
+                  svnurl='http://llvm.org/svn/llvm-project/lnt/trunk',
+                  workdir='lnt')
 
     # Get the LLVM test-suite sources.
-    f.addStep(SVN(name='pull.test-suite', mode='incremental', method='fresh',
-                  baseURL='http://llvm.org/svn/llvm-project/test-suite/',
-                  defaultBranch='trunk', workdir='test-suite',
-                  alwaysUseLatest=False))
+    checkoutSVN(f = f,
+                  name='pull.test-suite', mode='incremental',
+                  svnurl='http://llvm.org/svn/llvm-project/test-suite/trunk',
+                  workdir='test-suite')
 
     # Create the LNT virtual env.
     f.addStep(buildbot.steps.shell.ShellCommand(

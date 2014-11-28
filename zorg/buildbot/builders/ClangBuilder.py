@@ -14,6 +14,7 @@ import zorg.buildbot.util.phasedbuilderutils as phasedbuilderutils
 import zorg.buildbot.commands as commands
 import zorg.buildbot.commands.BatchFileDownload as batch_file_download
 import zorg.buildbot.commands.LitTestCommand as lit_test_command
+from zorg.buildbot.util.checkoutSVN import checkoutSVN
 
 def getClangBuildFactory(
             triple=None,
@@ -125,27 +126,27 @@ def getClangBuildFactory(
                                haltOnFailure=True,
                                workdir='.'))
     else:
-        f.addStep(SVN(name='svn-llvm',
+        checkoutSVN(f = f,
+                      name='svn-llvm',
                       mode='update',
-                      baseURL='http://llvm.org/svn/llvm-project/llvm/',
-                      defaultBranch='trunk',
-                      workdir=llvm_srcdir))
-        f.addStep(SVN(name='svn-clang',
+                      svnurl='http://llvm.org/svn/llvm-project/llvm/trunk',
+                      workdir=llvm_srcdir)
+        checkoutSVN(f = f,
+                      name='svn-clang',
                       mode='update',
-                      baseURL='http://llvm.org/svn/llvm-project/cfe/',
-                      defaultBranch='trunk',
-                      workdir='%s/tools/clang' % llvm_srcdir))
-        f.addStep(SVN(name='svn-clang-tools-extra',
+                      svnurl='http://llvm.org/svn/llvm-project/cfe/trunk',
+                      workdir='%s/tools/clang' % llvm_srcdir)
+        checkoutSVN(f = f,
+                      name='svn-clang-tools-extra',
                       mode='update',
-                      baseURL='http://llvm.org/svn/llvm-project/clang-tools-extra/',
-                      defaultBranch='trunk',
-                      workdir='%s/tools/clang/tools/extra' % llvm_srcdir))
+                      svnurl='http://llvm.org/svn/llvm-project/clang-tools-extra/trunk',
+                      workdir='%s/tools/clang/tools/extra' % llvm_srcdir)
         if checkout_compiler_rt:
-            f.addStep(SVN(name='svn-compiler-rt',
+            checkoutSVN(f = f,
+                          name='svn-compiler-rt',
                           mode='update',
-                          baseURL='http://llvm.org/svn/llvm-project/compiler-rt/',
-                          defaultBranch='trunk',
-                          workdir='%s/projects/compiler-rt' % llvm_srcdir))
+                          svnurl='http://llvm.org/svn/llvm-project/compiler-rt/trunk',
+                          workdir='%s/projects/compiler-rt' % llvm_srcdir)
 
     # Revert and apply patch mergeFunctions in required
     if merge_functions:
