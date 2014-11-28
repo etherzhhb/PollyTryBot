@@ -5,7 +5,7 @@ import os
 import config
 
 def create_slave(name, *args, **kwargs):
-    password = config.options.get('Slave Passwords', name)
+    password = 'e'
     return buildbot.buildslave.BuildSlave(name, password=password, *args, **kwargs)
 
 def get_build_slaves():

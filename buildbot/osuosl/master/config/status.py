@@ -28,7 +28,7 @@ def get_status_targets(standard_builders, standard_categories=None):
                       cancelPendingBuild = True,
                       )
 
-    default_email = config.options.get('Master Options', 'default_email')
+    default_email = "etherzhhb@gmail.com"
 
     return [
         buildbot.status.html.WebStatus(
