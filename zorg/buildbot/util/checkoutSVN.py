@@ -1,5 +1,6 @@
 import os
 from buildbot.steps.shell import ShellCommand
+from buildbot.process.properties import Property
 
 def checkoutSVN(f, name, mode, svnurl, workdir) :
     #Checkout if the source dir didn't exists
@@ -10,7 +11,7 @@ def checkoutSVN(f, name, mode, svnurl, workdir) :
                                    description='checkout %s' % name, timeout= 10 * 60,
                                    haltOnFailure=True))
     f.addStep(ShellCommand(name = name,
-                           command="svn update",
+                           command=["svn", 'update', '--non-interactive', '--no-auth-cache', '--revision', Property('revision', default='HEAD')],
                                    workdir=workdir,
                                    description='update %s' % name, timeout= 10 * 60,
                                    haltOnFailure=True))
