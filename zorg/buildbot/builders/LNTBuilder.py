@@ -199,7 +199,7 @@ def CreateLNTNightlyFactory(nt_flags, cc_path=None, cxx_path=None,
        cc_command = ['echo', cc_path]
     else:
        cc_command = ['find', 'host-compiler', '-name', 'clang']
-    f.addStep(buildbot.steps.shell.SetProperty(
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(
               name='find.cc',
               command=cc_command,
               extract_fn=_get_cc,
@@ -208,7 +208,7 @@ def CreateLNTNightlyFactory(nt_flags, cc_path=None, cxx_path=None,
        cc_command = ['echo', cxx_path]
     else:
        cc_command = ['find', 'host-compiler', '-name', 'clang++']
-    f.addStep(buildbot.steps.shell.SetProperty(
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(
               name='find.cxx',
               command=cc_command,
               extract_fn=_get_cxx,
@@ -221,7 +221,7 @@ def CreateLNTNightlyFactory(nt_flags, cc_path=None, cxx_path=None,
             WithProperties('%(builddir)s/lnt.venv/bin/lnt'),
             'runtest', '--verbose']
     if db_url:
-        f.addStep(buildbot.steps.shell.SetProperty(
+        f.addStep(buildbot.steps.shell.SetPropertyFromCommand(
                   name='db_url',
                   command=['echo', db_url, ':', WithProperties('%(buildername)s')],
                   extract_fn=_get_db_url,
@@ -229,7 +229,7 @@ def CreateLNTNightlyFactory(nt_flags, cc_path=None, cxx_path=None,
         args.extend(['--submit', WithProperties('%(db_url)s')])
     # Add --liblto-path if necessary.
     if '-flto' in nt_flags:
-        f.addStep(buildbot.steps.shell.SetProperty(
+        f.addStep(buildbot.steps.shell.SetPropertyFromCommand(
                   name='find.liblto',
                   command=['find', 'host-compiler', '-name', 'libLTO.dylib'],
                   extract_fn=_get_liblto,

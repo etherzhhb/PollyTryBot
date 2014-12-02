@@ -3,7 +3,7 @@ import os
 import buildbot
 import buildbot.process.factory
 from buildbot.steps.source import SVN, Git
-from buildbot.steps.shell import Configure, ShellCommand, SetProperty
+from buildbot.steps.shell import Configure, ShellCommand, SetPropertyFromCommand
 from buildbot.process.properties import WithProperties
 
 def getLLDBuildFactory(
@@ -26,7 +26,7 @@ def getLLDBuildFactory(
 
     f = buildbot.process.factory.BuildFactory()
     # Determine the build directory.
-    f.addStep(buildbot.steps.shell.SetProperty(name="get_builddir",
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(name="get_builddir",
                                                command=["pwd"],
                                                property="builddir",
                                                description="set build dir",
@@ -138,7 +138,7 @@ def getLLDWinBuildFactory(
 
     # Note: ShellCommand does not pass the params with special symbols right.
     # The " ".join is a workaround for this bug.
-    f.addStep(SetProperty(name="CMake_done",
+    f.addStep(SetPropertyFromCommand(name="CMake_done",
                           workdir=llvm_objdir,
                           command=WithProperties(" ".join(checkCMakeCommand)),
                                    #"cmd", "/C",

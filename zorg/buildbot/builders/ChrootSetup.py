@@ -52,7 +52,7 @@ def addDarwinChrootSetup(f, build_root_images=[],
                 workdir="mounts"))
 
         mount_point_property = "mount_point.%d" % i
-        f.addStep(buildbot.steps.shell.SetProperty(
+        f.addStep(buildbot.steps.shell.SetPropertyFromCommand(
                 name="get.mount_point.%d" % i,
                 property=mount_point_property,
                 command=["python", "-c", """\

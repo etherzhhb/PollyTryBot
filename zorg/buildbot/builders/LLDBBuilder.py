@@ -3,7 +3,7 @@ import os
 import buildbot
 import buildbot.process.factory
 from buildbot.steps.source import SVN
-from buildbot.steps.shell import Configure, SetProperty
+from buildbot.steps.shell import Configure, SetPropertyFromCommand
 from buildbot.steps.shell import ShellCommand, WarningCountingShellCommand
 from buildbot.process.properties import WithProperties
 from zorg.buildbot.commands.LitTestCommand import LitTestCommand
@@ -30,7 +30,7 @@ def getLLDBBuildFactory(
     f = buildbot.process.factory.BuildFactory()
 
     # Determine the build directory.
-    f.addStep(SetProperty(name="get_builddir",
+    f.addStep(SetPropertyFromCommand(name="get_builddir",
               command=["pwd"],
               property="builddir",
               description="set build dir",
@@ -39,7 +39,7 @@ def getLLDBBuildFactory(
     # Find out what version of llvm and clang are needed to build this version
     # of lldb. Right now we will assume they use the same version.
     # XXX - could this be done directly on the master instead of the slave?
-    f.addStep(SetProperty(command='svn cat http://llvm.org/svn/llvm-project/lldb/trunk/scripts/build-llvm.pl | grep ^our.*llvm_revision | cut -d \\" -f 2',
+    f.addStep(SetPropertyFromCommand(command='svn cat http://llvm.org/svn/llvm-project/lldb/trunk/scripts/build-llvm.pl | grep ^our.*llvm_revision | cut -d \\" -f 2',
                           property='llvmrev'))
 
     # The SVN build step provides no mechanism to check out a specific revision
@@ -107,7 +107,7 @@ def getLLDBBuildFactory(
 
 def getLLDBxcodebuildFactory(use_cc=None):
     f = buildbot.process.factory.BuildFactory()
-    f.addStep(SetProperty(name='get_builddir',
+    f.addStep(SetPropertyFromCommand(name='get_builddir',
                           command=['pwd'],
                           property='builddir',
                           description='set build dir',
@@ -170,13 +170,13 @@ def getLLDBxcodebuildFactory(use_cc=None):
     if not use_cc:
         use_cc = '/Applications/Xcode.app/Contents/Developer/Toolchains/'
         use_cc += 'XcodeDefault.xctoolchain/usr/bin/clang'
-        f.addStep(SetProperty(name='set.cc',
+        f.addStep(SetPropertyFromCommand(name='set.cc',
                   command=['xcrun', '-find', 'clang'],
                   property='use_cc',
                   description='set cc',
                   workdir=lldb_srcdir))
     else:
-        f.addStep(SetProperty(name='set.cc',
+        f.addStep(SetPropertyFromCommand(name='set.cc',
                   command=['echo', use_cc],
                   property='use_cc',
                   description='set cc',
