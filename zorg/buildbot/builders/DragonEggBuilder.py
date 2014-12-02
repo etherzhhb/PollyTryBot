@@ -38,7 +38,7 @@ def getDragonEggBootstrapFactory(gcc_repository, extra_languages=[],
     f = buildbot.process.factory.BuildFactory()
 
     # Determine the build directory.
-    f.addStep(buildbot.steps.shell.SetProperty(name='get_builddir',
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(name='get_builddir',
                                                command=['pwd'],
                                                property='builddir',
                                                description='set build dir',
@@ -128,7 +128,7 @@ def getDragonEggBootstrapFactory(gcc_repository, extra_languages=[],
       # versions.  Set the library path so that programs compiled with the just
       # built GCC will start successfully, rather than failing due to missing
       # shared library dependencies.
-      f.addStep(buildbot.steps.shell.SetProperty(name='gcc.search.paths.%s' % stage,
+      f.addStep(buildbot.steps.shell.SetPropertyFromCommand(name='gcc.search.paths.%s' % stage,
                                                  command=[WithProperties(prev_gcc),
                                                           '-print-search-dirs'],
                                                  extract_fn=extractSearchPaths,
@@ -285,7 +285,7 @@ def getDragonEggNightlyTestBuildFactory(gcc='gcc', gxx='g++',
     f = buildbot.process.factory.BuildFactory()
 
     # Determine the build directory.
-    f.addStep(buildbot.steps.shell.SetProperty(name='get_builddir',
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(name='get_builddir',
                                                command=['pwd'],
                                                property='builddir',
                                                description='set build dir',
@@ -433,7 +433,7 @@ def getDragonEggTestBuildFactory(gcc='gcc', svn_testsuites=[],
     f = buildbot.process.factory.BuildFactory()
 
     # Determine the build directory.
-    f.addStep(buildbot.steps.shell.SetProperty(name='get_builddir',
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(name='get_builddir',
                                                command=['pwd'],
                                                property='builddir',
                                                description='set build dir',

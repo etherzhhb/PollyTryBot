@@ -44,7 +44,7 @@ def getLLVMBuildFactory(
 
     # Determine the build directory.
     f.addStep(
-        buildbot.steps.shell.SetProperty(
+        buildbot.steps.shell.SetPropertyFromCommand(
             name        = "get_builddir",
             command     = ["pwd"],
             property    = "builddir",

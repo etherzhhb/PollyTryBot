@@ -22,7 +22,7 @@ def getLibiomp5BuildFactory(clean=True, env=None, buildcompiler="gcc"):
     f = buildbot.process.factory.BuildFactory()
 
     # Determine the build directory.
-    f.addStep(buildbot.steps.shell.SetProperty(name="get_builddir",
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(name="get_builddir",
                                                command=["pwd"],
                                                property="builddir",
                                                description="set build dir",

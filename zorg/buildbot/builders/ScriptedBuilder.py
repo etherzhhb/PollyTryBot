@@ -1,5 +1,5 @@
 import buildbot
-from buildbot.steps.shell import WarningCountingShellCommand, SetProperty
+from buildbot.steps.shell import WarningCountingShellCommand, SetPropertyFromCommand
 from buildbot.process.properties import WithProperties
 
 def getScriptedBuildFactory(
@@ -19,7 +19,7 @@ def getScriptedBuildFactory(
 
     # Determine the build directory.
     f.addStep(
-      buildbot.steps.shell.SetProperty(
+      buildbot.steps.shell.SetPropertyFromCommand(
         name        = "get.builddir",
         command     = ["pwd"],
         property    = "builddir",

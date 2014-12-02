@@ -58,7 +58,7 @@ def getLibcxxAndAbiBuilder(f=None, env={}, additional_features=set(),
         f = buildbot.process.factory.BuildFactory()
 
     # Determine the build directory.
-    f.addStep(buildbot.steps.shell.SetProperty(
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(
         name="get_builddir",
         command=["pwd"],
         property="builddir",

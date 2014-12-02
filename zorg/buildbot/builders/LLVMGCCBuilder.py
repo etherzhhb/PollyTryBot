@@ -1,7 +1,7 @@
 import buildbot
 from buildbot.steps.source import SVN
 from buildbot.steps.shell import Configure, WarningCountingShellCommand
-from buildbot.steps.shell import ShellCommand, SetProperty
+from buildbot.steps.shell import ShellCommand, SetPropertyFromCommand
 from buildbot.process.properties import WithProperties
 
 from zorg.buildbot.commands.LitTestCommand import LitTestCommand
@@ -34,7 +34,7 @@ def getLLVMGCCBuildFactory(jobs='%(jobs)s', update=True, clean=True,
   f = buildbot.process.factory.BuildFactory()
 
   # Determine the build directory.
-  f.addStep(buildbot.steps.shell.SetProperty(name="get_builddir",
+  f.addStep(buildbot.steps.shell.SetPropertyFromCommand(name="get_builddir",
                                              command=["pwd"],
                                              property    = "builddir",
                                              description = "set build dir",

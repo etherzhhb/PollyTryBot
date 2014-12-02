@@ -2,8 +2,7 @@ import buildbot
 import buildbot.process.factory
 import os
 
-from buildbot.process.properties import WithProperties, Property
-from buildbot.steps.shell import Configure, ShellCommand, SetProperty
+from buildbot.steps.shell import Configure, ShellCommand, SetPropertyFromCommand
 from buildbot.steps.shell import WarningCountingShellCommand
 from buildbot.steps.source import SVN
 from buildbot.steps.transfer import FileDownload
@@ -64,7 +63,7 @@ def getClangBuildFactory(
     f = buildbot.process.factory.BuildFactory()
 
     # Determine the build directory.
-    f.addStep(buildbot.steps.shell.SetProperty(name="get_builddir",
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(name="get_builddir",
                                                command=["pwd"],
                                                property="builddir",
                                                description="set build dir",
@@ -168,7 +167,7 @@ def getClangBuildFactory(
             expected_makefile = 'Makefile'
         else:
             expected_makefile = 'Makefile.config'
-        f.addStep(SetProperty(name="Makefile_isready",
+        f.addStep(SetPropertyFromCommand(name="Makefile_isready",
                               workdir=llvm_1_objdir,
                               command=["sh", "-c",
                                        "test -e %s && echo OK || echo Missing" % expected_makefile],
@@ -542,7 +541,7 @@ def getClangCMakeBuildFactory(
                                workdir='.',
                                env=env))
     else:
-        f.addStep(SetProperty(name="check ninja files 1",
+        f.addStep(SetPropertyFromCommand(name="check ninja files 1",
                               workdir=stage1_build,
                               command=check_build_cmd,
                               flunkOnFailure=False,
@@ -597,7 +596,7 @@ def getClangCMakeBuildFactory(
                                workdir='.',
                                env=env))
     else:
-        f.addStep(SetProperty(name="check ninja files 2",
+        f.addStep(SetPropertyFromCommand(name="check ninja files 2",
                               workdir=stage2_build,
                               command=check_build_cmd,
                               flunkOnFailure=False,
@@ -1056,7 +1055,7 @@ def phasedClang(config_options, is_bootstrap=True, use_lto=False,
     else:
         f = phasedbuilderutils.GetLatestValidated(f)
     cc_command = ['find', 'host-compiler', '-name', 'clang']
-    f.addStep(buildbot.steps.shell.SetProperty(
+    f.addStep(buildbot.steps.shell.SetPropertyFromCommand(
               name='find.cc',
               command=cc_command,
               extract_fn=phasedbuilderutils.find_cc,
@@ -1073,7 +1072,7 @@ def phasedClang(config_options, is_bootstrap=True, use_lto=False,
     if use_lto:
         liblto_command = ['find', WithProperties('%(builddir)s/host-compiler'),
                           '-name', 'libLTO.dylib']
-        f.addStep(buildbot.steps.shell.SetProperty(
+        f.addStep(buildbot.steps.shell.SetPropertyFromCommand(
                 name='find.liblto',
                 command=liblto_command,
                 extract_fn=phasedbuilderutils.find_liblto,
