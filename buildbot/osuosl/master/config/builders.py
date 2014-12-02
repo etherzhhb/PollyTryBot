@@ -19,7 +19,7 @@ def get_builders():
                                                     nt_flags=['--multisample=1', '--mllvm=-polly', '-j16' ],
                                                     reportBuildslave=False,
                                                     package_cache="http://parkas1.inria.fr/packages",
-                                                    submitURL='http://llvm.org/perf/submitRun',
+                                                    submitURL='http://gcc45.fsffrance.org:8383/submitRun',
                                                     testerName='x86_64-penryn-O3-polly-fast')},
 
         {'name': "perf-x86_64-penryn-O3-polly-parallel-fast",
@@ -30,7 +30,7 @@ def get_builders():
                                                     nt_flags=['--multisample=1', '--mllvm=-polly', '--mllvm=-polly-parallel', '-j16', '--cflag=-lgomp' ],
                                                     reportBuildslave=False,
                                                     package_cache="http://parkas1.inria.fr/packages",
-                                                    submitURL='http://llvm.org/perf/submitRun',
+                                                    submitURL='http://gcc45.fsffrance.org:8383/submitRun',
                                                     testerName='x86_64-penryn-O3-polly-parallel-fast')},
 
         {'name': "perf-x86_64-penryn-O3-polly-detect-only",
@@ -41,7 +41,7 @@ def get_builders():
                                                     nt_flags=['--multisample=10', '--mllvm=-polly', '--mllvm=-polly-code-generator=none', '--mllvm=-polly-optimizer=none', '--mllvm=-polly-run-dce=false', '--rerun'],
                                                     reportBuildslave=False,
                                                     package_cache="http://parkas1.inria.fr/packages",
-                                                    submitURL='http://llvm.org/perf/submitRun',
+                                                    submitURL='http://gcc45.fsffrance.org:8383/submitRun',
                                                     testerName='x86_64-penryn-O3-polly-detect-only')},
 
         {'name': "perf-x86_64-penryn-O3-polly-detect-and-dependences-only",
@@ -56,7 +56,7 @@ def get_builders():
                                                               '--rerun'],
                                                     reportBuildslave=False,
                                                     package_cache="http://parkas1.inria.fr/packages",
-                                                    submitURL='http://llvm.org/perf/submitRun',
+                                                    submitURL='http://gcc45.fsffrance.org:8383/submitRun',
                                                     testerName='x86_64-penryn-O3-polly-detect-and-dependences-only')},
 
         {'name': "perf-x86_64-penryn-O3-polly",
@@ -67,7 +67,7 @@ def get_builders():
                                                     nt_flags=['--multisample=10', '--mllvm=-polly', '--rerun'],
                                                     reportBuildslave=False,
                                                     package_cache="http://parkas1.inria.fr/packages",
-                                                    submitURL='http://llvm.org/perf/submitRun',
+                                                    submitURL='http://gcc45.fsffrance.org:8383/submitRun',
                                                     testerName='x86_64-penryn-O3-polly')}
     ]
 
