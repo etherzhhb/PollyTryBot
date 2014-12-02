@@ -4,7 +4,7 @@ import buildbot
 import buildbot.process.factory
 from buildbot.steps.source import SVN, Git
 from buildbot.steps.shell import Configure, ShellCommand
-from buildbot.process.properties import WithProperties
+from buildbot.process.properties import WithProperties, Property
 
 from zorg.buildbot.builders import LNTBuilder
 from zorg.buildbot.builders import ClangBuilder
@@ -57,19 +57,19 @@ def getPollyBuildFactory():
                                workdir=llvm_objdir))
     # Build Polly
     f.addStep(ShellCommand(name="build_polly",
-                               command=["make"],
+                               command=["make", "-j", Property('jobs', '1')],
                                haltOnFailure=True,
                                description=["build polly"],
                                workdir=llvm_objdir))
     # Test Polly
     f.addStep(ShellCommand(name="test_polly",
-                               command=["make", "polly-test"],
+                               command=["make", "-j", Property('jobs', '1'), "polly-test"],
                                haltOnFailure=True,
                                description=["test polly"],
                                workdir=llvm_objdir))
     # Check formatting
     f.addStep(ShellCommand(name="test_polly_format",
-                               command=["make", "polly-check-format"],
+                               command=["make", "-j", Property('jobs', '1'), "polly-check-format"],
                                haltOnFailure=False,
                                description=["Check formatting"],
                                workdir=llvm_objdir))
@@ -113,7 +113,7 @@ def AddExternalPollyBuildFactory(f, llvm_installdir):
                                workdir=polly_objdir))
     # Build Polly
     f.addStep(ShellCommand(name="build-polly",
-                               command=["make"],
+                               command=["make", "-j", Property('jobs', '1')],
                                haltOnFailure=True,
                                description=["build polly"],
                                workdir=polly_objdir))
