@@ -136,7 +136,7 @@ def getPollyLNTFactory(triple, nt_flags, xfails=[], clean=False, test=False,
     for argname in lnt_arg_names:
         if argname in kwargs:
             lnt_args[argname] = kwargs.pop(argname)
-
+            
     llvm_install_dir = 'llvm.install.1'
 
     f = ClangBuilder.getClangBuildFactory(
@@ -156,6 +156,8 @@ def getPollyLNTFactory(triple, nt_flags, xfails=[], clean=False, test=False,
     nt_flags.append('--cflag=' + '-Xclang')
     nt_flags.append(WithProperties("--cflag=%s/polly.install/lib/LLVMPolly.so",
                                    'builddir'))
+
+    lnt_args['parallel'] = True
 
     # Add an LNT test runner.
     LNTBuilder.AddLNTTestsToFactory(f, nt_flags,
