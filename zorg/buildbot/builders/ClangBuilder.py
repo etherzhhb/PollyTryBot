@@ -2,6 +2,7 @@ import buildbot
 import buildbot.process.factory
 import os
 
+from buildbot.process.properties import WithProperties, Interpolate
 from buildbot.steps.shell import Configure, ShellCommand, SetPropertyFromCommand
 from buildbot.steps.shell import WarningCountingShellCommand
 from buildbot.steps.source import SVN
@@ -210,7 +211,7 @@ def getClangBuildFactory(
     # Make clean if using in-dir builds.
     if clean and llvm_srcdir == llvm_1_objdir:
         f.addStep(WarningCountingShellCommand(name="clean-llvm",
-                                              command=[make, "clean"],
+                                              command=[make, "-j", Interpolate('%(prop:try_jobs:-%(prop:jobs:-1)s)s'), "clean"],
                                               haltOnFailure=True,
                                               description="cleaning llvm",
                                               descriptionDone="clean llvm",
@@ -223,7 +224,7 @@ def getClangBuildFactory(
 
     f.addStep(WarningCountingShellCommand(name="compile",
                                           command=['nice', '-n', '10',
-                                                   make, WithProperties("-j%s" % jobs)],
+                                                   make, "-j", Interpolate('%(prop:try_jobs:-%(prop:jobs:-1)s)s')],
                                           haltOnFailure=True,
                                           flunkOnFailure=not run_gdb,
                                           description=["compiling", stage1_config],
@@ -234,7 +235,7 @@ def getClangBuildFactory(
     if examples:
         f.addStep(WarningCountingShellCommand(name="compile.examples",
                                               command=['nice', '-n', '10',
-                                                       make, WithProperties("-j%s" % jobs),
+                                                       make, "-j", Interpolate('%(prop:try_jobs:-%(prop:jobs:-1)s)s'),
                                                        "BUILD_EXAMPLES=1"],
                                               haltOnFailure=True,
                                               description=["compiling", stage1_config, "examples"],
@@ -253,7 +254,7 @@ def getClangBuildFactory(
         extraTestDirs += '%(builddir)s/llvm/tools/clang/utils/C++Tests'
     if test:
         f.addStep(lit_test_command.LitTestCommand(name='check-all',
-                                   command=[make, "check-all", "VERBOSE=1",
+                                   command=[make, "-j", Interpolate('%(prop:try_jobs:-%(prop:jobs:-1)s)s'), "check-all", "VERBOSE=1",
                                             WithProperties("LIT_ARGS=%s" % clangTestArgs),
                                             WithProperties("EXTRA_TESTDIRS=%s" % extraTestDirs)],
                                    flunkOnFailure=not run_gdb,
@@ -394,7 +395,7 @@ def getClangBuildFactory(
 
     if test:
         f.addStep(lit_test_command.LitTestCommand(name='check-all',
-                                   command=[make, "check-all", "VERBOSE=1",
+                                   command=[make, "-j", Interpolate('%(prop:try_jobs:-%(prop:jobs:-1)s)s'), "check-all", "VERBOSE=1",
                                             WithProperties("LIT_ARGS=%s" % clangTestArgs),
                                             WithProperties("EXTRA_TESTDIRS=%s" % extraTestDirs)],
                                    description=["checking"],
