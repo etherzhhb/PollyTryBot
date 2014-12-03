@@ -6,7 +6,7 @@ import os
 
 import buildbot
 from buildbot.steps.source.svn import SVN
-from buildbot.process.properties import WithProperties
+from buildbot.process.properties import WithProperties, Interpolate
 
 import zorg
 from zorg.buildbot.builders import ClangBuilder
@@ -158,7 +158,7 @@ def AddLNTTestsToFactory(f, nt_flags, cc_path, cxx_path, **kwargs):
              '--test-suite', WithProperties('%(builddir)s/test-suite'), 
              '--no-machdep-info', reportName])
     if parallel:
-        args.extend(['-j', WithProperties(jobs)])
+        args.extend(['-j', Interpolate('%(prop:try_jobs:-%(prop:jobs:-1)s)s')])
     args.extend(nt_flags)
     f.addStep(zorg.buildbot.commands.LitTestCommand.LitTestCommand(
             name='lnt.nightly-test', command=args, haltOnFailure=True,

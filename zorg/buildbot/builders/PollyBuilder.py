@@ -43,7 +43,7 @@ def installRequiredLibs(f, polly_src):
 def checkRequiredLibs(f, polly_src):
     cloog_srcdir = WithProperties("%s/cloog.src", "builddir")
     f.addStep(ShellCommand(name="check-cloog-isl",
-                               command=["make", "check"],
+                               command=["make", "-j", Interpolate('%(prop:try_jobs:-%(prop:jobs:-1)s)s'), "check"],
                                haltOnFailure=True,
                                description=["check cloog and isl"],
                                workdir=cloog_srcdir))
