@@ -6,13 +6,13 @@ from zorg.buildbot.builders import PollyBuilder
 def get_builders():
     return [
         {'name': "polly-amd64-linux",
-         'slavenames':["parkas1_bot_ether", "parkas2", "parkas3"],
+         'slavenames':["parkas1", "parkas2", "parkas3", "gcc10", "gcc14", "gcc16", "gcc20"],
          'builddir':"polly-amd64-linux",
          'category' : "polly",
          'factory': PollyBuilder.getPollyBuildFactory()},
 
         {'name': "perf-x86_64-penryn-O3-polly-fast",
-         'slavenames':["parkas1_bot_ether", "parkas2", "parkas3"],
+         'slavenames':["parkas1", "parkas2", "parkas3"],
          'builddir': "perf-x86_64-penryn-O3-polly-fast",
          'category' : "polly",
          'factory': PollyBuilder.getPollyLNTFactory(triple="x86_64-pc-linux-gnu",
@@ -23,7 +23,7 @@ def get_builders():
                                                     testerName='x86_64-penryn-O3-polly-fast')},
 
         {'name': "perf-x86_64-penryn-O3-polly-parallel-fast",
-         'slavenames':["parkas1_bot_ether", "parkas2", "parkas3"],
+         'slavenames':["parkas1", "parkas2", "parkas3"],
          'builddir': "perf-x86_64-penryn-O3-polly-parallel-fast",
          'category' : "polly",
          'factory': PollyBuilder.getPollyLNTFactory(triple="x86_64-pc-linux-gnu",
@@ -34,7 +34,7 @@ def get_builders():
                                                     testerName='x86_64-penryn-O3-polly-parallel-fast')},
 
         {'name': "perf-x86_64-penryn-O3-polly-detect-only",
-         'slavenames':["parkas1_bot_ether", "parkas2", "parkas3"],
+         'slavenames':["parkas1", "parkas2", "parkas3"],
          'builddir':"perf-x86_64-penryn-O3-polly-detect-only",
          'category' : "polly",
          'factory': PollyBuilder.getPollyLNTFactory(triple="x86_64-pc-linux-gnu",
@@ -45,7 +45,7 @@ def get_builders():
                                                     testerName='x86_64-penryn-O3-polly-detect-only')},
 
         {'name': "perf-x86_64-penryn-O3-polly-detect-and-dependences-only",
-         'slavenames':["parkas1_bot_ether", "parkas2", "parkas3"],
+         'slavenames':["parkas1", "parkas2", "parkas3"],
          'builddir':"perf-x86_64-penryn-O3-polly-detect-and-dependences-only",
          'category' : "polly",
          'factory': PollyBuilder.getPollyLNTFactory(triple="x86_64-pc-linux-gnu",
@@ -60,7 +60,7 @@ def get_builders():
                                                     testerName='x86_64-penryn-O3-polly-detect-and-dependences-only')},
 
         {'name': "perf-x86_64-penryn-O3-polly",
-         'slavenames':["parkas1_bot_ether", "parkas2", "parkas3"],
+         'slavenames':["parkas1", "parkas2", "parkas3"],
          'builddir':"perf-x86_64-penryn-O3-polly",
          'category' : "polly",
          'factory': PollyBuilder.getPollyLNTFactory(triple="x86_64-pc-linux-gnu",
