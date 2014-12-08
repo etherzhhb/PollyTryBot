@@ -162,7 +162,7 @@ def AddLNTTestsToFactory(f, nt_flags, cc_path, cxx_path, **kwargs):
              '--test-suite', WithProperties('%(builddir)s/test-suite'), 
              '--no-machdep-info', reportName])
     if parallel:
-        args.extend(['-j', Interpolate('%(prop:try_jobs:-%(prop:jobs:-1)s)s')])
+        args.extend(['-j', Interpolate('%(prop:lnt_jobs:-%(prop:try_jobs:-%(prop:jobs:-1)s)s)s')])
     args.extend(nt_flags)
     f.addStep(zorg.buildbot.commands.LitTestCommand.LitTestCommand(
             name='lnt.nightly-test', command=args, haltOnFailure=True,
